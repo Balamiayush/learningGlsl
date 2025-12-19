@@ -1,7 +1,136 @@
-import * as THREE from 'three';
-import gsap from 'gsap';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced RGB Hover Effect</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
- const canvas = document.querySelector('#canvas');
+    body {
+      background: #000;
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+    }
+
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .content {
+      position: relative;
+      z-index: 0;
+      padding: 4rem 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: clamp(2rem, 5vw, 4rem);
+      margin-bottom: 3rem;
+      background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .img-wrapper {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 0.5rem;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .img-wrapper:hover {
+      transform: scale(0.98);
+    }
+
+    .hover-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+    }
+
+    .footer {
+      text-align: center;
+      color: #666;
+      margin-top: 4rem;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        padding: 2rem 1rem;
+      }
+      
+      .gallery {
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  
+  <div class="content">
+    <h1>Interactive Gallery</h1>
+    
+    <div class="gallery">
+      <div class="img-wrapper">
+        <img src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=800&h=800&fit=crop" alt="Cat 1" class="hover-image">
+      </div>
+      <div class="img-wrapper">
+        <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&h=800&fit=crop" alt="Cat 2" class="hover-image">
+      </div>
+      <div class="img-wrapper">
+        <img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=800&h=800&fit=crop" alt="Cat 3" class="hover-image">
+      </div>
+      <div class="img-wrapper">
+        <img src="https://images.unsplash.com/photo-1573865526739-10c1dd7fb965?w=800&h=800&fit=crop" alt="Cat 4" class="hover-image">
+      </div>
+      <div class="img-wrapper">
+        <img src="https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=800&h=800&fit=crop" alt="Cat 5" class="hover-image">
+      </div>
+      <div class="img-wrapper">
+        <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800&h=800&fit=crop" alt="Cat 6" class="hover-image">
+      </div>
+    </div>
+    
+    <p class="footer">Hover, scroll, and watch the magic happen ✨</p>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script type="module">
+    const canvas = document.querySelector('#canvas');
     const scene = new THREE.Scene();
 
     const fov = 75;
@@ -79,7 +208,7 @@ import gsap from 'gsap';
             pos.z += wave * uWave * 20.0;
             
             // Subtle 3D rotation on hover
-            float angle = uRotation * 0.01;
+            float angle = uRotation * 0.1;
             float cosA = cos(angle);
             float sinA = sin(angle);
             mat3 rotationY = mat3(
@@ -108,7 +237,7 @@ import gsap from 'gsap';
 
           void main() {
             // Pixelated block effect
-            float blocks = 8.0;
+            float blocks = 10.0;
             vec2 blockUv = floor(vUv * blocks) / blocks;
             float distance = length(blockUv - uMouse);
             float effect = smoothstep(0.5, 0.0, distance);
@@ -137,7 +266,7 @@ import gsap from 'gsap';
             finalRGB += 0.12 * uHover * (1.0 + sin(uTime * 8.0) * 0.2);
             
             // Film grain effect
-            float grain = random(vUv + uTime * 0.1) * 0.2;
+            float grain = random(vUv + uTime * 0.1) * 0.03;
             finalRGB += grain * uHover;
             
             // Vignette effect on hover
@@ -307,3 +436,6 @@ import gsap from 'gsap';
     }
 
     animate();
+  </script>
+</body>
+</html>
